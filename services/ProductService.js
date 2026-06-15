@@ -4,24 +4,7 @@ import { products as initialProducts } from "../data/products.js";
 
 export class ProductService {
   static async seedIfNeeded() {
-    const count = await Product.countDocuments({});
-    if (count === 0) {
-      console.log("Seeding database with default luxury products...");
-      
-      const seeded = initialProducts.map(p => ({
-        ...p,
-        slug: p.id,
-        SKU: `SKU-${p.id.toUpperCase()}`,
-        seoMetadata: {
-          title: `${p.name} | Abaya by Tabassum`,
-          description: p.description.substring(0, 150),
-          keywords: `${p.category}, ${p.fabric}, Modest Fashion`
-        }
-      }));
-
-      await Product.insertMany(seeded);
-      console.log("Seeding complete!");
-    }
+    // Automatic seeding disabled to keep custom admin inventory clean.
   }
 
   static async getAllProducts(filters = {}) {

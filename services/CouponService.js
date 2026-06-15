@@ -41,4 +41,12 @@ export class CouponService {
 
     return Coupon.create(couponData);
   }
+
+  static async deleteCoupon(code) {
+    const coupon = await Coupon.findOne({ code: code.toUpperCase() });
+    if (!coupon) throw new Error("Coupon not found");
+    coupon.isActive = false;
+    await coupon.save();
+    return coupon;
+  }
 }

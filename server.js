@@ -184,6 +184,12 @@ app.post("/api/coupons", asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, message: "Coupon created successfully", data: result });
 }));
 
+app.delete("/api/coupons/:code", asyncHandler(async (req, res) => {
+  await authenticate(req, ["Admin", "Super Admin"]);
+  const result = await CouponService.deleteCoupon(req.params.code);
+  res.json({ success: true, message: "Coupon deleted successfully", data: result });
+}));
+
 app.post("/api/coupons/validate", asyncHandler(async (req, res) => {
   const result = await CouponService.validateCoupon(req.body.code);
   res.json({ success: true, data: result });
