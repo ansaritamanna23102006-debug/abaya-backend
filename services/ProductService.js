@@ -50,8 +50,12 @@ export class ProductService {
     return Product.create(productData);
   }
 
-  static async updateProduct(id, updateData) {
-    const product = await Product.findByIdAndUpdate(id, updateData, { new: true });
+  static async updateProduct(idOrSlug, updateData) {
+    const query = mongoose.Types.ObjectId.isValid(idOrSlug)
+      ? { _id: idOrSlug }
+      : { slug: idOrSlug };
+
+    const product = await Product.findOneAndUpdate(query, updateData, { new: true });
     if (!product) throw new Error("Product not found");
     return product;
   }

@@ -112,6 +112,13 @@ app.post("/api/products", asyncHandler(async (req, res) => {
   res.status(201).json({ success: true, message: "Product created successfully", data: result });
 }));
 
+app.put("/api/products/:id", asyncHandler(async (req, res) => {
+  await authenticate(req, ["Admin", "Super Admin"]);
+  const validated = ProductCreateSchema.partial().parse(req.body);
+  const result = await ProductService.updateProduct(req.params.id, validated);
+  res.json({ success: true, message: "Product updated successfully", data: result });
+}));
+
 app.delete("/api/products/:id", asyncHandler(async (req, res) => {
   await authenticate(req, ["Admin", "Super Admin"]);
   const result = await ProductService.softDeleteProduct(req.params.id);
