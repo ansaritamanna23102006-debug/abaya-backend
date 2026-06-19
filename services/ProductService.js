@@ -4,6 +4,7 @@ import { products as initialProducts } from "../data/products.js";
 
 export class ProductService {
   static async seedIfNeeded() {
+<<<<<<< HEAD
     const count = await Product.countDocuments({ isDeleted: false });
     const hasTest = await Product.findOne({ slug: "test" });
     if (count === 0 || (count === 1 && hasTest)) {
@@ -24,6 +25,9 @@ export class ProductService {
       await Product.insertMany(seeded);
       console.log("Seeding complete!");
     }
+=======
+    // Automatic seeding disabled to keep custom admin inventory clean.
+>>>>>>> 4036a265979b26d340f04f053e3bc81fdb4e3a93
   }
 
   static async getAllProducts(filters = {}) {
