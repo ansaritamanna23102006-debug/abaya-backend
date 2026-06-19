@@ -214,6 +214,11 @@ app.get("/api/admin/analytics", asyncHandler(async (req, res) => {
   res.json({ success: true, data: stats });
 }));
 
+// Root Health Check Welcome Page
+app.get("/", (req, res) => {
+  res.send("Abaya By Tabassum Atelier API is running successfully.");
+});
+
 // Global Error Handler
 app.use(errorMiddleware);
 
