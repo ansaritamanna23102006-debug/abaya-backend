@@ -4,19 +4,7 @@ import { reviews as initialReviews } from "../data/products.js";
 
 export class ReviewService {
   static async seedIfNeeded() {
-    const count = await Review.countDocuments({});
-    if (count === 0) {
-      console.log("Seeding customer reviews...");
-      const seeded = initialReviews.map(r => ({
-        name: r.name,
-        rating: r.rating,
-        comment: r.comment,
-        product: r.product, // stores the full product name
-        date: r.date,
-        status: "Approved"
-      }));
-      await Review.insertMany(seeded);
-    }
+    // Automatic seeding disabled to keep reviews database clean.
   }
 
   static async getAllReviews() {

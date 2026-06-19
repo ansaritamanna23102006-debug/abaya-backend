@@ -37,10 +37,8 @@ export function errorMiddleware(error, req, res, next) {
   if (res.headersSent) {
     return next(error);
   }
-  
-  console.error(`[API ERROR] ${req.method} ${req.url}:`, error);
 
-  // Zod Schema Validation Error
+  // Zod Schema Validation Error (400)
   if (error instanceof ZodError) {
     return res.status(400).json({
       success: false,
@@ -52,7 +50,7 @@ export function errorMiddleware(error, req, res, next) {
     });
   }
 
-  // Authentication/Authorization Errors
+  // Authentication/Authorization Errors (401/403)
   const unauthorizedMessages = [
     "unauthorized",
     "credentials were not provided",
@@ -73,6 +71,9 @@ export function errorMiddleware(error, req, res, next) {
       message: error.message || "Authentication failed",
     });
   }
+
+  // Log all other unexpected critical errors (500, etc.)
+  console.error(`[API ERROR] ${req.method} ${req.url}:`, error);
 
   // Duplicate Key MongoDB Error
   if (error.code === 11000) {

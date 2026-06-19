@@ -4,9 +4,11 @@ import { products as initialProducts } from "../data/products.js";
 
 export class ProductService {
   static async seedIfNeeded() {
-    const count = await Product.countDocuments({});
-    if (count === 0) {
+    const count = await Product.countDocuments({ isDeleted: false });
+    const hasTest = await Product.findOne({ slug: "test" });
+    if (count === 0 || (count === 1 && hasTest)) {
       console.log("Seeding database with default luxury products...");
+      await Product.deleteMany({});
       
       const seeded = initialProducts.map(p => ({
         ...p,
