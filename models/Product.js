@@ -17,6 +17,7 @@ const ProductSchema = new mongoose.Schema({
   category: { type: String, required: true }, // Simple string category or matched to Category collection
   stock: { type: Number, default: 10 },
   sizes: [{ type: String }],
+  details: [{ type: String }],
   color: { type: String },
   fabric: { type: String },
   image: { type: String }, // Main image URL
