@@ -112,10 +112,15 @@ export class AuthService {
 
     const { accessToken, refreshToken: newRefreshToken } = generateTokens(user);
     
-    // Rotate refresh token
-    user.refreshTokens = user.refreshTokens.filter(t => t !== token);
-    user.refreshTokens.push(newRefreshToken);
-    await user.save();
+    // Rotate refresh token atomically to prevent Mongoose VersionError (__v conflict)
+    const result = await User.updateOne(
+      { _id: user._id, refreshTokens: token },
+      { $set: { "refreshTokens.$": newRefreshToken } }
+    );
+    
+    if (result.matchedCount === 0) {
+      throw new Error("Refresh token reuse detected or invalid token");
+    }
 
     return { accessToken, refreshToken: newRefreshToken };
   }
